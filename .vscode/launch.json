@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch BinaryTree",
+            "request": "launch",
+            "mainClass": "BinaryTree",
+            "projectName": "TSP_99e4559"
+        },
+        {
+            "type": "java",
+            "name": "Launch ceation",
+            "request": "launch",
+            "mainClass": "LinkedList.ceation",
+            "projectName": "TSP_99e4559"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch InfixExpression",
+            "request": "launch",
+            "mainClass": "InfixExpression",
+            "projectName": "TSP_99e4559"
+        },
+        {
+            "type": "java",
+            "name": "Launch NextGreaterToRight",
+            "request": "launch",
+            "mainClass": "NextGreaterToRight",
+            "projectName": "TSP_99e4559"
+        },
+        {
+            "type": "java",
+            "name": "Launch SkidingWindowMaximum",
+            "request": "launch",
+            "mainClass": "SkidingWindowMaximum",
+            "projectName": "TSP_99e4559"
+        },
+        {
+            "type": "java",
+            "name": "Launch printHello",
+            "request": "launch",
+            "mainClass": "printHello",
+            "projectName": "TSP_99e4559"
+        }
+    ]
+}
