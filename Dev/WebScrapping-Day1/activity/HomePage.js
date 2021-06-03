@@ -20,6 +20,6 @@ function parseData(html){
     let aTag=ch(".widget-items.cta-link a").attr("href");
     // console.log(aTag);
     let completeLink="https://www.espncricinfo.com"+aTag;
-    console.log(completeLink);
+    // console.log(completeLink);
     getAllMatches(completeLink);
 }

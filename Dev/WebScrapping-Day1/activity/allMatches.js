@@ -22,10 +22,10 @@ function parseData(html){
     let ch=cheerio.load(html);
     let allTag=ch('a[data-hover="Scorecard"]');
     // console.log(allTag)
-    console.log(allTag.length)
+    // console.log(allTag.length)
     for(let i=0 ;i<allTag.length;i++){
         let completeLink="https://www.espncricinfo.com"+ch(allTag[i]).attr("href");
-        console.log(completeLink);
+        // console.log(completeLink);
         getMatch(completeLink);
     }
 }
