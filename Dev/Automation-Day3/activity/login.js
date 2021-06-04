@@ -1,159 +1,217 @@
 const { getElementsByTagName } = require("domutils");
-const puppeteer=require("puppeteer");
+const puppeteer = require("puppeteer");
 let tab;
 let indx;
 let globalCode;
-let browserOpenPromise=puppeteer.launch({headless:false,defaultViewport:false,args:["--start-maximized"]});
-browserOpenPromise.then(function(browser){
-    let pagesPromise=browser.pages();
+let browserOpenPromise = puppeteer.launch({ headless: false, defaultViewport: false, args: ["--start-maximized"] });
+browserOpenPromise.then(function (browser) {
+    let pagesPromise = browser.pages();
     return pagesPromise;
 })
-.then(function(pages){
-    let page=pages[0];
-    tab=page;
-    return page;
-})
-.then(function(page){
-    let pageOpenedPromise=page.goto("https://www.hackerrank.com/auth/login?h_l=body_middle_left_button&h_r=login");
-    return pageOpenedPromise;
-})
-.then(function(){
-    let idTypedPromise=tab.type("#input-1","gadob83422@relumyx.com");
-    return idTypedPromise;
-})
-.then(function(){
-    let passwordTypesPromise=tab.type("#input-2","12345678");
-    console.log("id typed");
-    return passwordTypesPromise;
-})
-.then(function(){
-    let clickPromise=tab.click(".ui-btn.ui-btn-large.ui-btn-primary.auth-button.ui-btn-styled");
-    return clickPromise;
-})
-.then(function(){
-    let waitAndClickPromise=waitAndClick("#base-card-1-link");
-    return waitAndClickPromise;
-})
-.then(function(){
-    let waitAndClickPromise=waitAndClick(".ui-btn.ui-btn-normal.playlist-card-btn.ui-btn-primary.ui-btn-link.ui-btn-styled");
-    console.log("warmup clicked");
-    return waitAndClickPromise;
-})
-.then(function(){
-    let waitPromise=tab.waitForSelector(".js-track-click.challenge-list-item");
-    console.log("waiting for selector");
-    return waitPromise;
-})
-.then(function(){
-    let AllQuestionsLinks=tab.$$(".js-track-click.challenge-list-item");
-    console.log("returnign all links of questions");
-    // console.log(AllQuestionsLinks)
-    return AllQuestionsLinks;
-})
-.then(function(allQuestions){
-    let allLinkPromise=[];
-    console.log(allQuestions.length);
-    for(let i=0;i<allQuestions.length;i++){
-        let linkPendingPromise=tab.evaluate(function(elem){return elem.getAttribute("href");},allQuestions[i]);
-        allLinkPromise.push(linkPendingPromise);
-    }
-    let allQuestionsPromise=Promise.all(allLinkPromise);
-    return allQuestionsPromise;
-})
-.then(function(allLinkPromise){
-    console.log("===================");
-    AllLinks=[];
-    for(let i=0;i<allLinkPromise.length;i++){
-        let completeLink="https://www.hackerrank.com"+allLinkPromise[i];
-        AllLinks.push(completeLink);
-    }
-    console.log(AllLinks);
-    let questionSolvePromise=solveQuestion(AllLinks[0]);
-    return questionSolvePromise;
+    .then(function (pages) {
+        let page = pages[0];
+        tab = page;
+        return page;
+    })
+    .then(function (page) {
+        let pageOpenedPromise = page.goto("https://www.hackerrank.com/auth/login?h_l=body_middle_left_button&h_r=login");
+        return pageOpenedPromise;
+    })
+    .then(function () {
+        let idTypedPromise = tab.type("#input-1", "gadob83422@relumyx.com");
+        return idTypedPromise;
+    })
+    .then(function () {
+        let passwordTypesPromise = tab.type("#input-2", "12345678");
+        console.log("id typed");
+        return passwordTypesPromise;
+    })
+    .then(function () {
+        let clickPromise = tab.click(".ui-btn.ui-btn-large.ui-btn-primary.auth-button.ui-btn-styled");
+        return clickPromise;
+    })
+    .then(function () {
+        let waitAndClickPromise = waitAndClick("#base-card-1-link");
+        return waitAndClickPromise;
+    })
+    .then(function () {
+        let waitAndClickPromise = waitAndClick(".ui-btn.ui-btn-normal.playlist-card-btn.ui-btn-primary.ui-btn-link.ui-btn-styled");
+        console.log("warmup clicked");
+        return waitAndClickPromise;
+    })
+    .then(function () {
+        let waitPromise = tab.waitForSelector(".js-track-click.challenge-list-item");
+        console.log("waiting for selector");
+        return waitPromise;
+    })
+    .then(function () {
+        let AllQuestionsLinks = tab.$$(".js-track-click.challenge-list-item");
+        console.log("returnign all links of questions");
+        // console.log(AllQuestionsLinks)
+        return AllQuestionsLinks;
+    })
+    .then(function (allQuestions) {
+        let allLinkPromise = [];
+        console.log(allQuestions.length);
+        for (let i = 0; i < allQuestions.length; i++) {
+            let linkPendingPromise = tab.evaluate(function (elem) { return elem.getAttribute("href"); }, allQuestions[i]);
+            allLinkPromise.push(linkPendingPromise);
+        }
+        let allQuestionsPromise = Promise.all(allLinkPromise);
+        return allQuestionsPromise;
+    })
+    .then(function (allLinkPromise) {
+        console.log("===================");
+        AllLinks = [];
+        for (let i = 0; i < allLinkPromise.length; i++) {
+            let completeLink = "https://www.hackerrank.com" + allLinkPromise[i];
+            AllLinks.push(completeLink);
+        }
+        console.log(AllLinks);
+        let questionSolvePromise = solveQuestion(AllLinks[0]);
+        return questionSolvePromise;
 
-})
-.then(function(){
-    console.log("yes solved");
-})
-.catch(function(error){
-    console.log("fuut gya");
-    console.log(error);
-})
+    })
+    .then(function () {
+        console.log("yes solved");
+    })
+    .catch(function (error) {
+        console.log("fuut gya");
+        console.log(error);
+    })
 
-function waitAndClick(selector){
-    return new Promise(function(resolve,reject){
-        let waitPromise=tab.waitForSelector(selector);
-        waitPromise.then(function(){
-            let clickPromise=tab.click(selector);
+function waitAndClick(selector) {
+    return new Promise(function (resolve, reject) {
+        let waitPromise = tab.waitForSelector(selector);
+        waitPromise.then(function () {
+            let clickPromise = tab.click(selector);
             return clickPromise;
         })
-        .then(function(){
-            resolve();
-        })
-        .catch(function(error){
-            reject(error);
-        })
+            .then(function () {
+                resolve();
+            })
+            .catch(function (error) {
+                reject(error);
+            })
     });
 }
 
-function solveQuestion(qLink){
-    return new Promise(function(resolve,reject){
-        let clickPromise=tab.goto(qLink);
-        clickPromise.then(function(){
+function solveQuestion(qLink) {
+    return new Promise(function (resolve, reject) {
+        let clickPromise = tab.goto(qLink);
+        clickPromise.then(function () {
             console.log("going wait and click finction");
-            let waitAndClickPromise=waitAndClick('div[data-attr2="Editorial"]');
-            console.log(waitAndClickPromise);
+            let waitAndClickPromise = waitAndClick('div[data-attr2="Editorial"]');
+            // console.log(waitAndClickPromise);
             return waitAndClickPromise;
-        }).then(function(){
-            let codePromise=getCode();
+        }).then(function () {
+            let codePromise = getCode();
             console.log("Inside Editorial");
             return codePromise;
+        }).then(function () {
+            console.log("going into Problem Section");
+            let clickPromise = tab.click('div[data-attr2="Problem"]');
+            return clickPromise;
+        }).then(function () {
+            console.log("Indside ClickPromise");
+            let codePastePromise = pasteCode();
+            return codePastePromise;
+        }).then(function () {
+            console.log("pasted");
         })
+
     })
 }
 
-function getCode(){
-    return new Promise(function(resolve,reject){
-        let waitPromise=tab.waitForSelector(".hackdown-content h3");
-        waitPromise.then(function(){
-            let allCodeNamesPromise=tab.$$(".hackdown-content h3");
+function getCode() {
+    return new Promise(function (resolve, reject) {
+        let waitPromise = tab.waitForSelector(".hackdown-content h3");
+        waitPromise.then(function () {
+            let allCodeNamesPromise = tab.$$(".hackdown-content h3");
             return allCodeNamesPromise;
-        }).then(function(allCodeNames){
+        }).then(function (allCodeNames) {
             // console.log("paragraph "+allCodeNames.length);
-            let allCodeNamesP=[];
-            for(let i=0;i<allCodeNames.length;i++){
-                let namePromise=tab.evaluate(function(elem){
+            let allCodeNamesP = [];
+            for (let i = 0; i < allCodeNames.length; i++) {
+                let namePromise = tab.evaluate(function (elem) {
                     return elem.textContent;
-                },allCodeNames[i])
+                }, allCodeNames[i])
                 allCodeNamesP.push(namePromise);
             }
-            let promiseAllCodePromise=Promise.all(allCodeNamesP);
+            let promiseAllCodePromise = Promise.all(allCodeNamesP);
             return promiseAllCodePromise;
-            }).then(function(allCodePromise){
+        }).then(function (allCodePromise) {
             // console.log("length is :"+allCodePromise.length);
             // console.log(allCodePromise);
-            for(let i=0;i<allCodePromise.length;i++){
+            for (let i = 0; i < allCodePromise.length; i++) {
                 // console.log("lanuage used id - "+allCodePromise[i])
-                if(allCodePromise[i]=="C++"){
-                    indx=i;
+                if (allCodePromise[i] == "C++") {
+                    indx = i;
                     break;
                 }
             }
             // console.log("index= "+indx);
-            let allDivPromise=tab.$$(".hackdown-content .highlight");
+            let allDivPromise = tab.$$(".hackdown-content .highlight");
             // console.log(allDivPromise)
             return allDivPromise;
-        }).then(function(allDiv){
+        }).then(function (allDiv) {
             //[<div></div>,<div></div>,<div></div>]
             // console.log(allDiv[indx]);
-            let myDiv=allDiv[indx];
-            let codePromise=tab.evaluate(function(elem){return elem.textContent},myDiv)
+            let myDiv = allDiv[indx];
+            let codePromise = tab.evaluate(function (elem) { return elem.textContent }, myDiv)
             return codePromise;
-        }).then(function(code){
-            globalCode=code;
+        }).then(function (code) {
+            globalCode = code;
             resolve();
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error);
         })
     })
+}
+
+function pasteCode() {
+    return new Promise(function (resolve, reject) {
+        let waitAndClickPromise = waitAndClick(".checkbox-input");
+        waitAndClickPromise.then(function(){
+            console.log(globalCode);
+            let codeTextBoxPastePromise = tab.type(".input.text-area.custominput.auto-width", globalCode);
+            return codeTextBoxPastePromise;
+        })
+        .then(function() {
+            console.log("code pasted temprorary");
+            let ctrlKeyHoldPromise=tab.keyboard.down("Control");
+            return ctrlKeyHoldPromise;
+        })
+        .then(function(){
+            let aPressPromise=tab.keyboard.press("a");
+            return aPressPromise;
+        })
+        .then(function(){
+            let xPressPromise=tab.keyboard.press("x");
+            return xPressPromise;
+        })
+        .then(function(){
+            let clickPromise=tab.click(".hr-monaco-editor-parent");
+            return clickPromise;
+        })
+        .then(function(){
+            let aPressPromise=tab.keyboard.press("a");
+            return aPressPromise;
+        })
+        .then(function(){
+            let vPressPromise=tab.keyboard.press("v");
+            return vPressPromise;
+        })
+        .then(function(){
+            let submitPromise=tab.click(".ui-btn.ui-btn-normal.ui-btn-primary.pull-right.hr-monaco-submit.ui-btn-styled");
+            return submitPromise;
+        })
+        .then(function(){
+            resolve();
+        })
+        .catch(function(error) {
+            console.log(error);
+            reject(error);
+        })
+})
 }
