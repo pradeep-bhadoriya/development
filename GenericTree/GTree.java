@@ -208,6 +208,71 @@ public class GTree {
         }
     }
 
+    public static void Mirror(Node node) {
+        // base case
+        if (node == null) {
+            return;
+        }
+        for (Node child : node.children) {
+            Mirror(child);
+        }
+        for (int i = 0; i < node.children.size() / 2; i++) {
+            Node temp = node.children.get(i);
+            node.children.set(i, node.children.get(node.children.size() - i - 1));
+            node.children.set(node.children.size() - i, temp);
+        }
+        // faith
+
+    }
+
+    public static void removeLeaves(Node node) {
+        // write your code here
+        // base case
+        // for(int i=0;i<node.children.size();i++){
+        // if(node.children.get(i).children.size()==0){
+        // node.children.remove(node.children.get(i));
+        // i--;
+        // }
+        // }
+        // for(Node child:node.children){
+        // removeLeaves(child);
+        // }
+        ArrayList<Node> st = new ArrayList<>();
+        for (Node child : node.children) {
+            if (child.children.size() > 0) {
+                st.add(child);
+            }
+        }
+        node.children = st;
+        for (Node child : node.children) {
+            removeLeaves(child);
+        }
+
+    }
+
+    public static Node getTail(Node node) {
+        Node tail = node;
+        while (tail.children.size() != 0) {
+            tail = tail.children.get(0);
+        }
+        return tail;
+    }
+
+    public static void linearize(Node node) {
+        // write your code here
+        for (Node child : node.children) {
+            linearize(child);
+        }
+        for (int i = node.children.size() - 2; i >= 0; i--) {
+            Node last = node.children.get(i + 1);
+            Node sLast = node.children.get(i);
+
+            Node tail = getTail(sLast);
+            node.children.remove(i + 1);
+            tail.children.add(last);
+        }
+    }
+
     public static ArrayList<Integer> nodeToRootPath(Node node, int data) {
         // write your code here
         // base case
@@ -229,14 +294,14 @@ public class GTree {
         return ans;
     }
 
-    public static int nearestCommonAncester(Node node, int d1, int d2) {
+    public static void nearestCommonAncester(Node node, int d1, int d2) {
         // write your code here
         ArrayList<Integer> ntrp1 = nodeToRootPath(node, d1);
         ArrayList<Integer> ntrp2 = nodeToRootPath(node, d2);
 
         int i = ntrp1.size() - 1;
         int j = ntrp1.size() - 1;
-        res = -1;
+        int res = -1;
         while (i > 0 && j > 0) {
             if (ntrp1.get(i) != ntrp2.get(j))
                 break;
@@ -248,13 +313,13 @@ public class GTree {
 
     public static boolean isMirror(Node node1, Node node2) {
         // base case
-        if (nod1.children.size() != node2.children.size()) {
+        if (node1.children.size() != node2.children.size()) {
             return false;
         }
         // faith
         boolean res = true;
         int i = 0;
-        int j = node2.size() - 1;
+        int j = node2.children.size() - 1;
         while (i <= j) {
             res = isMirror(node1.children.get(i), node2.children.get(j));
             if (res == false) {
@@ -307,21 +372,21 @@ public class GTree {
         }
     }
 
-    public static int KthLargest(Node node, int k) {
+    public static void KthLargest(Node node, int k) {
         if (node.data < floor) {
             if (node.data > ceil) {
                 ceil = node.data;
             }
         }
         for (Node child : node.children) {
-            LthLargest(child, k);
+            KthLargest(child, k);
         }
     }
 
     public static void fun() {
         Integer[] data = { 1, 2 };
         Node root = construct(data);
-        System.out.print(root);
+        System.out.print(root.children.get(0).data);
 
     }
 

@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.Math;
 
 public class BinaryTree {
     public static class Node {
@@ -381,6 +382,109 @@ public class BinaryTree {
         pathToLeafFromRoot(node.right, path + node.data + " ", sum + node.data, lo, hi);
     }
 
+    public static Node createLeftCloneTree(Node node) {
+        // write your code here
+        Node root = node;
+        // base case
+        if (root.left == null && root.right == null) {
+            return root;
+        }
+        // faith
+        if (root.left != null) {
+            Node temp = node;
+            Node nextNode = node.left;
+            node.left = temp;
+            temp.left = nextNode;
+            createLeftCloneTree(nextNode);
+        }
+        if (root.right != null) {
+            createLeftCloneTree(node.right);
+        }
+        return root;
+    }
+
+    public static void printSingleChildNodes(Node node) {
+        // write your code here
+        if (node.left != null && node.right != null) {
+            printSingleChildNodes(node.left);
+            printSingleChildNodes(node.right);
+        } else if (node.left == null && node.right == null) {
+            return;
+        } else {
+            if (node.left != null) {
+                System.out.println(node.left.data);
+            }
+            if (node.right != null) {
+                System.out.println(node.right.data);
+            }
+        }
+    }
+
+    public static Node removeLeaves(Node node) {
+        // write your code here
+        if (node == null) {
+
+        }
+        if (node.left != null && node.right != null) {
+            node.left = removeLeaves(node.left);
+            node.right = removeLeaves(node.right);
+        } else if (node.left != null) {
+            node.left = removeLeaves(node.left);
+        } else if (node.right != null) {
+            node.right = removeLeaves(node.right);
+        } else {
+            node = null;
+        }
+        // return node;
+
+        // faith
+        return node;
+
+    }
+
+    public static class Bpair {
+        int height;
+        boolean isBalance;
+
+        public Bpair() {
+            this.height = -1;
+            this.isBalance = true;
+        }
+    }
+
+    public static Bpair isBalanced(Node node) {
+        // base case
+        if (node == null) {
+            Bpair nBPair = new Bpair();
+            nBPair.height = -1;
+            nBPair.isBalance = true;
+            return nBPair;
+        }
+        // faith
+        Bpair lres = isBalanced(node.left);
+        Bpair rres = isBalanced(node.right);
+
+        if (lres.isBalance == true && rres.isBalance == true) {
+            if (Math.abs(lres.height - rres.height) <= 1) {
+                Bpair temp = new Bpair();
+                temp.height = lres.height - rres.height;
+                temp.isBalance = true;
+                return temp;
+            } else {
+                Bpair temp = new Bpair();
+                temp.isBalance = false;
+                temp.height = lres.height - rres.height;
+                return temp;
+            }
+        } else {
+            Bpair temp = new Bpair();
+            temp.isBalance = false;
+            temp.height = lres.height - rres.height;
+            return temp;
+        }
+
+    }
+
     public static void fun() {
         Integer[] arr = { 50, 25, 12, null, null, 37, 30, null, null, null, 75, 62, null, 70, null, null, 87, null,
                 null };
@@ -401,11 +505,16 @@ public class BinaryTree {
         // System.out.println(find(root, 70));
         // ArrayList<Integer> ans = nodeToRootPath(root, 70);
         // System.out.println(ans);
-        printKNodesFar(root, 87, 3);
+        // printKNodesFar(root, 87, 3);
         // pathToLeafFromRoot(root, "", 0, 70, 150);
         // iterativePrePostInTraversal(root);
-        // printKLevelsDownRecursive(root, 0);
-
+        // printKLevelsDownRecursive(root, 0);()
+        // Node res = createLeftCloneTree(root);
+        System.out.println("=================================");
+        // display(res);
+        Bpair res = isBalanced(root);
+        System.out.println(res.isBalance);
+        display(root);
     }
 
     public static void main(String[] args) {
