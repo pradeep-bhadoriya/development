@@ -464,30 +464,34 @@ public class BinaryTree {
         Bpair lres = isBalanced(node.left);
         Bpair rres = isBalanced(node.right);
 
-        if (lres.isBalance == true && rres.isBalance == true) {
-            if (Math.abs(lres.height - rres.height) <= 1) {
-                Bpair temp = new Bpair();
-                temp.height = lres.height - rres.height;
-                temp.isBalance = true;
-                return temp;
-            } else {
-                Bpair temp = new Bpair();
-                temp.isBalance = false;
-                temp.height = lres.height - rres.height;
-                return temp;
-            }
-        } else {
-            Bpair temp = new Bpair();
-            temp.isBalance = false;
-            temp.height = lres.height - rres.height;
-            return temp;
-        }
+        Bpair mPair = new Bpair();
+        boolean status = Math.abs(lres.height - rres.height) <= 1;
+        mPair.height = Math.max(lres.height, rres.height) + 1;
+        mPair.isBalance = lres.isBalance && rres.isBalance && status;
+        return mPair;
+        // if (lres.isBalance == true && rres.isBalance == true) {
+        // if (Math.abs(lres.height - rres.height) <= 1) {
+        // Bpair temp = new Bpair();
+        // temp.height = lres.height - rres.height;
+        // temp.isBalance = true;
+        // return temp;
+        // } else {
+        // Bpair temp = new Bpair();
+        // temp.isBalance = false;
+        // temp.height = lres.height - rres.height;
+        // return temp;
+        // }
+        // } else {
+        // Bpair temp = new Bpair();
+        // temp.isBalance = false;
+        // temp.height = lres.height - rres.height;
+        // return temp;
+        // }
 
     }
 
     public static void fun() {
-        Integer[] arr = { 50, 25, 12, null, null, 37, 30, null, null, null, 75, 62, null, 70, null, null, 87, null,
-                null };
+        Integer[] arr = { 50, 25, 12, null, null, null, 7, 62, null, 70, null, null, 5, null, null };
         Node root = construct(arr);
         System.out.println("PradeepDon");
         display(root);

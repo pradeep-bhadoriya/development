@@ -37,7 +37,7 @@ public class GTree {
         return root;
     }
 
-    public void display(Node root) {
+    public static void display(Node root) {
         // base case
 
         // my work
@@ -273,6 +273,22 @@ public class GTree {
         }
     }
 
+    public static boolean find(Node node, int data) {
+        // write your code here
+        if (node.data == data) {
+            return true;
+        }
+        boolean ans = false;
+        for (Node child : node.children) {
+            ans = find(child, data);
+            // if (ans == true) {
+            // return true;
+            // }
+            ans = ans || find(child, data);
+        }
+        return ans;
+    }
+
     public static ArrayList<Integer> nodeToRootPath(Node node, int data) {
         // write your code here
         // base case
@@ -294,7 +310,7 @@ public class GTree {
         return ans;
     }
 
-    public static void nearestCommonAncester(Node node, int d1, int d2) {
+    public static int nearestCommonAncester(Node node, int d1, int d2) {
         // write your code here
         ArrayList<Integer> ntrp1 = nodeToRootPath(node, d1);
         ArrayList<Integer> ntrp2 = nodeToRootPath(node, d2);
@@ -305,10 +321,27 @@ public class GTree {
         while (i > 0 && j > 0) {
             if (ntrp1.get(i) != ntrp2.get(j))
                 break;
-            else
+            else {
+                res = -ntrp1.get(i);
                 i--;
-            j--;
+                j--;
+            }
+
         }
+        return res;
+    }
+
+    public static boolean areSimilar(Node n1, Node n2) {
+        // write your code here
+        if (n1.children.size() != n2.children.size()) {
+            return false;
+        }
+        boolean ans = true;
+        for (int i = 0; i < n1.children.size(); i++) {
+            ans = ans && areSimilar(n1.children.get(i), n2.children.get(i));
+            return ans;
+        }
+        return ans;
     }
 
     public static boolean isMirror(Node node1, Node node2) {
@@ -372,21 +405,22 @@ public class GTree {
         }
     }
 
-    public static void KthLargest(Node node, int k) {
-        if (node.data < floor) {
-            if (node.data > ceil) {
-                ceil = node.data;
-            }
+    public static int kthLargest(Node node, int k) {
+        // write your code here
+        int data = Integer.MAX_VALUE;
+        for (int i = 0; i < k; i++) {
+            floor = Integer.MIN_VALUE;
+            ceilAndFloor(node, data);
+            data = floor;
         }
-        for (Node child : node.children) {
-            KthLargest(child, k);
-        }
+        return data;
     }
 
     public static void fun() {
-        Integer[] data = { 1, 2 };
+        Integer[] data = { 1, 2, 3 };
         Node root = construct(data);
-        System.out.print(root.children.get(0).data);
+        display(root);
+        System.out.println(kthLargest(root, 3));
 
     }
 
