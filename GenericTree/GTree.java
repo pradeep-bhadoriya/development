@@ -426,8 +426,8 @@ public class GTree {
         for(Node child:node.children){
             sum1+=maximumSubtreeSum(child);
         }
-        if(sum1>sumFinal){
-            sumFinal=sum1;
+        if(sum1+node.data>sumFinal){
+            sumFinal=sum1+node.data;
             res=node;
         }
         return sum1;
