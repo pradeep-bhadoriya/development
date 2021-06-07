@@ -20,9 +20,9 @@ public class GTree {
         Node root = null;
         Stack<Node> st = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
-            int data = arr[i];
-            Node nn = new Node(data);
+            Integer data = arr[i];
             if (arr[i] != null) {
+                Node nn = new Node(data);
                 if (st.size() == 0) {
                     root = nn;
                     st.push(nn);
@@ -418,7 +418,7 @@ public class GTree {
 
     static int sumFinal=0;
     static Node res;
-    public static void maximumSubtreeSum(Node){
+    public static int maximumSubtreeSum(Node node){
         //base case
 
         //faith
@@ -430,14 +430,36 @@ public class GTree {
             sumFinal=sum1+node.data;
             res=node;
         }
-        return sum1;
+        return sum1+node.data;
+    }
+
+    static int diameter;
+    public static int diameter(Node node){
+        int maxHeight=-1;
+        int secondMaxHeight=-1;
+        for(Node child:node.children){
+            int height=diameter(child);
+            if(height>maxHeight){
+                secondMaxHeight=maxHeight;
+                maxHeight=height;
+            }
+            else if(height>secondMaxHeight){
+                secondMaxHeight=height;
+            }
+        }
+
+        diameter=Math.max(diameter, secondMaxHeight+maxHeight+2);
+        return maxHeight+1;
     }
 
     public static void fun() {
-        Integer[] data = { 1, 2, 3 };
+        Integer[] data = {10, 20, -50, null, -60, null, null, 30, -70, null, 80, -110, null, 120, null,
+            null, 90, null, null, -40, 100,200,300,null,null , null, null, null};
         Node root = construct(data);
         display(root);
-        System.out.println(kthLargest(root, 3));
+        // System.out.println(maximumSubtreeSum(root));
+        diameter(root);
+        System.out.println(diameter);
 
     }
 
