@@ -416,6 +416,23 @@ public class GTree {
         return data;
     }
 
+    static int sumFinal=0;
+    static Node res;
+    public static void maximumSubtreeSum(Node){
+        //base case
+
+        //faith
+        int sum1=0;
+        for(Node child:node.children){
+            sum1+=maximumSubtreeSum(child);
+        }
+        if(sum1>sumFinal){
+            sumFinal=sum1;
+            res=node;
+        }
+        return sum1;
+    }
+
     public static void fun() {
         Integer[] data = { 1, 2, 3 };
         Node root = construct(data);
