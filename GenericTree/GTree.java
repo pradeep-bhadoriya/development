@@ -316,13 +316,13 @@ public class GTree {
         ArrayList<Integer> ntrp2 = nodeToRootPath(node, d2);
 
         int i = ntrp1.size() - 1;
-        int j = ntrp1.size() - 1;
+        int j = ntrp2.size() - 1;
         int res = -1;
-        while (i > 0 && j > 0) {
+        while (i >= 0 && j >= 0) {
             if (ntrp1.get(i) != ntrp2.get(j))
                 break;
             else {
-                res = -ntrp1.get(i);
+                res = ntrp1.get(i);
                 i--;
                 j--;
             }
