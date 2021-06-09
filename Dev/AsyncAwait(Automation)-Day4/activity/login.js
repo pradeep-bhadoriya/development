@@ -8,7 +8,7 @@ try{
     await page.type("#input-1", "gadob83422@relumyx.com");
     await page.type("#input-2", "12345678");
     await page.click(".ui-btn.ui-btn-large.ui-btn-primary.auth-button.ui-btn-styled");
-
+    
 }
 catch(error){
     console.log(error);
