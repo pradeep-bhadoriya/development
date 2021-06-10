@@ -4,6 +4,7 @@
 //create index.html file
 // add "start":"electron ."
 const electron=require("electron");
+const ejs=require("ejs-electron");
 
 const app=electron.app;
 const BrowserWindow=electron.BrowserWindow;
@@ -19,7 +20,9 @@ function createWindow(){
   })
 
   // and load the index.html of the app.
-  win.loadFile('index.html')
-  win.webContents.openDevTools();
+  win.loadFile('index.ejs').then(function(){
+    win.maximize();
+    win.webContents.openDevTools();
+  }) 
 }
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
