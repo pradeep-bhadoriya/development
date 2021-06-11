@@ -3,8 +3,8 @@
 //install electron
 //create index.html file
 // add "start":"electron ."
-const electron=require("electron");
-const ejs=require("ejs-electron");
+const electron = require('electron');
+const ejs = require("ejs-electron");
 
 const app=electron.app;
 const BrowserWindow=electron.BrowserWindow;
@@ -15,7 +15,8 @@ function createWindow(){
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration:true// 
+      nodeIntegration:true,
+      contextIsolation:false,
     }
   })
 
@@ -23,6 +24,6 @@ function createWindow(){
   win.loadFile('index.ejs').then(function(){
     win.maximize();
     win.webContents.openDevTools();
-  }) 
+  });
 }
 app.whenReady().then(createWindow);

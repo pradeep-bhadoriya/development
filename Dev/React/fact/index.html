@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React demo</title>
+    <!--React Logic -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <!-- Platform specific code . This below one is for browser specific . for mobile React-native is used -->
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel compiler : compile JSX code into JS code -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script type="text/babel">
+    //react ka code
+    //JSX -> Javascript
+    let id=0;
+    let names=["pradeep","ripu","krishnapal","neeraj"];
+    //functional components
+    function Hello(props){
+        console.log(props);
+        return <h1> Welcome to Rajwansh {props.name}</h1>
+    }
+
+    function HelloParent(){
+        return <React.Fragment>
+            {names.map(function(name){
+                return <Hello key={id++} name={name}></Hello>
+            })}     
+            </React.Fragment>
+    }
+
+    // what to render and where to render
+    ReactDOM.render(<HelloParent/>,document.getElementById("root"));
+    //React.createElement("h1",null,"Pradedfsdf from React!!!")
+</script>
+</html>
