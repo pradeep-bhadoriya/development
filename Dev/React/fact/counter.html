@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React demo</title>
+    <title>Counter demo</title>
     <!--React Logic -->
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <!-- Platform specific code . This below one is for browser specific . for mobile React-native is used -->
@@ -17,26 +17,45 @@
     <div id="root"></div>
 
 <script type="text/babel">
-    //react ka code
-    //JSX -> Javascript
-    let id=0;
-    let names=["pradeep","ripu","krishnapal","neeraj"];
-    //functional components
-    function Hello(props){
-        console.log(props);
-        return <h1 className="btn btn-primary"> Welcome to Rajwansh {props.name}</h1>
-    }
+   class Counter extends React.Component{  //Class container example
+       constructor(){
+           super();
+           this.state={
+               count:0
+           }
+       }
 
-    function HelloParent(){
+       increment=()=>{
+           console.log("increment");
+           this.setState({
+               count:this.state.count+1
+           })
+       }
+       decrement=()=>{
+           console.log("decrement");
+           this.setState({
+               count:this.state.count-1
+           })
+       }
+       reset=()=>{
+           console.log("Inside reset");
+           this.setState({
+               count:0
+           })
+       }
+   
+       //initially called and then called everytime when setState function is called
+    render(){
         return <React.Fragment>
-            {names.map(function(name){
-                return <Hello key={id++} name={name}></Hello>
-            })}     
+            <p className="btn btn-success d-block">{this.state.count}</p> 
+            <button className="btn btn-primary" onClick={this.increment}>+</button>
+            <button className="btn btn-danger" onClick={this.decrement}>-</button>    
+            <button className="btn btn-warning" onClick={this.reset}>Reset</button>    
             </React.Fragment>
     }
-
+}
     // what to render and where to render
-    ReactDOM.render(<HelloParent/>,document.getElementById("root"));
+    ReactDOM.render(<Counter/>,document.getElementById("root"));
     //React.createElement("h1",null,"Pradedfsdf from React!!!")
 </script>
 </body>
