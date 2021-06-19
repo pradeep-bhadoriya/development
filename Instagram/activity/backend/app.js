@@ -20,7 +20,7 @@ connection.connect();
 //   console.log('The solution is: ', results[0].solution);
 // });
 connection.query("select * from user_table",function(error,results,fileds){
-    console.log(fileds);
+    console.log(results);
 })
 
 

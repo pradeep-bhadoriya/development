@@ -1,0 +1,67 @@
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    /* margin-left: 80px; */
+}
+.chat-container{
+    background-color:darkseagreen;
+    height: 500;
+    width: 60%;
+    margin: auto;
+    background-image: url("./Whatsapp-Wallpaper-102.jpg");
+    background-size:cover;
+}
+.chat-box{
+    height: 550px;
+    overflow: auto;
+
+}
+.chat{
+    max-width: 300px;
+    clear: both;
+    padding: 6px;
+    border-radius: 10px;
+    margin: 5px;
+}
+.left{
+    background: rgb(133, 240, 240);
+}
+.right{
+    background-color: rgb(243, 196, 225);
+    float: right;
+}
+.chat-name{
+    font-weight: bold;
+}
+.chat-text{
+
+}
+.chat-input{
+    background: aliceblue;
+    width: 85%;
+    border-radius : 10px;
+    margin: auto;
+    display: flex;
+    height: 30px;
+    justify-content: space-around;
+    align-items: center;
+}
+.chat-input input{
+    outline: none;
+    border: none;
+    width: 85%;
+    border-radius: 10px;
+    height: 80%;
+    background-color: rgb(227, 235, 233);
+
+}
+.fas{
+    color: rgb(27, 194, 194);
+}
+.send{
+    border: solid;
+    width: auto;
+    border-radius: 10px;
+    background-color: rgb(203, 217, 223);
+}
