@@ -7,6 +7,20 @@
 let chat = document.querySelector("#input");
 let send = document.querySelector("#send");
 let chatBox = document.querySelector("#chat-box");
+let joinChat=document.querySelector(".join-chat");
+let chatName=document.querySelector("#chat-user")
+let userNameDiv=document.querySelector(".chat-user-name");
+let chatContent=document.querySelector(".chat-content");
+let user;
+
+joinChat.addEventListener("click",function(){
+    user=chatName.value;
+    if(user){
+        userNameDiv.classList.add("hide");
+        chatContent.classList.remove("hide");
+    }
+})
+
 
 send.addEventListener("click",function(){
     let chatMessage=chat.value;
@@ -17,7 +31,7 @@ send.addEventListener("click",function(){
 
         let chatName=document.createElement("div");
         chatName.classList.add("chat-name");
-        chatName.innerHTML="Pradeep";
+        chatName.innerHTML=user;
 
         let chatText=document.createElement("div");
         chatText.classList.add("chat-text");
@@ -33,6 +47,6 @@ send.addEventListener("click",function(){
         chat.value="";
     }
     else{
-
+        console.log("pradeep");
     }
 })

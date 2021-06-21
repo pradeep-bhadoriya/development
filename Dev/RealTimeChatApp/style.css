@@ -6,7 +6,7 @@
 }
 .chat-container{
     background-color:darkseagreen;
-    height: 500;
+    height: 600px;
     width: 60%;
     margin: auto;
     background-image: url("./Whatsapp-Wallpaper-102.jpg");
@@ -16,6 +16,21 @@
     height: 550px;
     overflow: auto;
 
+}
+.chat-user-name{
+    position: absolute;
+    top: 40%;
+    left: 30%;
+}
+.chat-content{
+    height: 100%;
+}
+.join-chat{
+    border: 4px solid;
+    color: rgb(10, 116, 202);
+}
+.hide{
+    display: none !important;
 }
 .chat{
     max-width: 300px;
