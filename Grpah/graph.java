@@ -145,7 +145,9 @@ public class graph {
     }
 
 
-    public static void getConnedtedComponent(ArrayList<Edge>[] grap)
+    public static void getConnedtedComponent(ArrayList<Edge>[] graph){
+        
+    }
 
     public static getConnectedComponents(ArrayList<Edge>[] graph){
         ArrayList<ArrayList<Integer>> comps=new ArrayList<>();
