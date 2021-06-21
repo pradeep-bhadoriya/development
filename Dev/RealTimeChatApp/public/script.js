@@ -16,6 +16,7 @@ let user;
 joinChat.addEventListener("click",function(){
     user=chatName.value;
     if(user){
+        socket.emit("join-chat",user);
         userNameDiv.classList.add("hide");
         chatContent.classList.remove("hide");
     }
@@ -24,6 +25,7 @@ joinChat.addEventListener("click",function(){
 
 send.addEventListener("click",function(){
     let chatMessage=chat.value;
+    socket.emit("send-chat",{user,chatMessage});
     if(chatMessage){
         let chatDiv=document.createElement("div");
         chatDiv.classList.add("chat");

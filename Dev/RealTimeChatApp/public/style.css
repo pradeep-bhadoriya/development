@@ -17,6 +17,16 @@
     overflow: auto;
 
 }
+.join{
+    align-items: center;
+    background-color: rgb(14, 196, 54);
+    width: 100% !important;
+}
+.leave{
+    align-items: center;
+    background-color: rgb(247, 55, 7);
+    width: 100% !important;
+}
 .chat-user-name{
     position: absolute;
     top: 40%;
