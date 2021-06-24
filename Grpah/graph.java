@@ -1,6 +1,8 @@
 import java.lang.reflect.Array;
 import java.util.*;
 
+import jdk.nashorn.api.tree.ArrayLiteralTree;
+
 public class graph {
 
     public static class Edge {
@@ -168,6 +170,8 @@ public class graph {
         }
         return count;
     }
+
+    public static int perfectFriends()
 
     public static void fun() {
         ArrayList<Edge>[] graph = createGraph();
