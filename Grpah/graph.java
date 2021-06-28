@@ -1,8 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.*;
 
-import jdk.nashorn.api.tree.ArrayLiteralTree;
-
 public class graph {
 
     public static class Edge {
@@ -171,35 +169,317 @@ public class graph {
         return count;
     }
 
-    public static int perfectFriends()
+    public static void hamiltonianPath(ArrayList<Edge>[] graph, int src,int root, boolean[] vis, String psf){
+        if(psf.length()==graph.length-1){
+            psf+=src;
+            for(Edge e:graph[src]){
+                if(e.nbr==root){
+                    System.out.println(psf+"*");
+                    return;
+                }
+            }
+            System.out.println(psf+".");
+            return;
+        }
+        vis[src]=true;
+        for(Edge e:graph[src]){
+            if(vis[e.nbr]==false){
+                hamiltonianPath(graph, e.nbr, root, vis, psf+src);
+            }
+        }
+        vis[src]=false;
+    }
+
+    public static class bfsPair{
+        int vtx;
+        String psf;
+
+        public bfsPair(int vtx, String psf){
+            this.vtx=vtx;
+            this.psf=psf;
+        }
+    }
+
+    public static void bfsGraph(ArrayList<Edge>[] graph, int src){
+        Queue<bfsPair> qu=new ArrayDeque<>();
+        boolean[] vis=new boolean[graph.length];
+        qu.add(new bfsPair(src, ""+src));
+        while(qu.size() >0){
+            vis[qu.peek().vtx]=true;
+            for(Edge e:graph[qu.peek().vtx]){
+                if(vis[e.nbr]==false){
+                    qu.add(new bfsPair(e.nbr, qu.peek().psf+e.nbr));
+                    vis[e.nbr]=true;
+                }
+            }
+            System.out.println(""+qu.peek().vtx+"@"+qu.peek().psf);
+            qu.remove();
+        }     
+    }
+
+    public static boolean bfsForCycle(ArrayList<Edge>[] graph, int src, boolean[] vis){
+        Queue<Integer> qu=new ArrayDeque<>();
+        qu.add(src);
+        // vis[src]=true;
+        // int sz=qu.size();
+        while(qu.size()>0){
+            int rem=qu.remove();
+            if(vis[rem]==true){
+                //cycle is present
+                return true;
+            }
+            else{
+                vis[rem]=true;
+            }
+
+            for(Edge e:graph[rem]){
+                if(vis[e.nbr]==false){
+                    qu.add(e.nbr);
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean dfsForCycle(ArrayList<Edge>[] graph, int src,int prt, boolean[] vis) {
+        if(vis[src]==true){
+            //cycle is present
+            return true;
+        }
+        vis[src]=true;
+        for(Edge e:graph[src]){
+            if(e.nbr!= prt){
+                boolean ans=dfsForCycle(graph, e.nbr, src, vis);
+                if(ans){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isGraphCycle(ArrayList<Edge>[] graph){
+        boolean[] vis=new boolean[graph.length];
+        for(int i=0;i<graph.length;i++){
+            if(vis[i]==false){
+                boolean isCycle=dfsForCycle(graph, i, -1,  vis);
+                if(isCycle){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static class bfsPairForBipartite{
+        int vtx;
+        int lvl;
+
+        public bfsPairForBipartite(int vtx, int lvl){
+            this.lvl=lvl;
+            this.vtx=vtx;
+        }
+    }
+
+    public static boolean bfsForBipartite(ArrayList<Edge>[] graph, int src, int[] vis){
+        Queue<bfsPairForBipartite> qu=new ArrayDeque<>();
+        qu.add(new bfsPairForBipartite(src, 0));
+        while(qu.size()>0){
+            bfsPairForBipartite rem=qu.remove();
+            if(vis[rem.vtx]!=-1){
+                System.out.println(rem.lvl);
+                if(rem.lvl==vis[rem.vtx]){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                vis[rem.vtx]=rem.lvl;
+            }
+
+            for(Edge e:graph[rem.vtx]){
+                if(vis[e.nbr]==-1){
+                    qu.add(new bfsPairForBipartite(e.nbr, rem.lvl+1));
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isBapartite(ArrayList<Edge>[] graph){
+        int[] vis=new int[graph.length];
+        Arrays.fill(vis,-1);
+
+        for(int i=0;i<graph.length;i++){
+            if(vis[i]==-1){
+                boolean ans=bfsForBipartite(graph, i, vis);
+                if(ans==false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static class bfsPairForInfection{
+        int vtx;
+        int lvl;
+
+        public bfsPairForInfection(int vtx, int lvl){
+            this.lvl=lvl;
+            this.vtx=vtx;
+        }
+    }
+
+    public static int spreadInfection(ArrayList<Edge>[] graph, int t, int src, boolean[] vis, int count){
+        Queue<bfsPairForInfection> qu=new ArrayDeque<>();
+        if(t==0) return 1;
+        qu.add(new bfsPairForInfection(src, 1));
+        while(qu.size()>0){
+            bfsPairForInfection rem=qu.remove();
+            
+            
+            if(vis[rem.vtx]==true){
+                continue;
+            }
+            else{
+                vis[rem.vtx]=true;
+                count++;
+            }
+            if(rem.lvl==t+1) break;
+
+            for(Edge e:graph[rem.vtx]){
+                if(vis[e.nbr]==false){
+                    qu.add(new bfsPairForInfection(e.nbr, rem.lvl+1));
+                }
+            }
+        }
+        // base case
+        return qu.size()==0?count:count-1;
+        // faith
+
+    }
+
+    public static class DPair implements Comparable<DPair>{
+        int vtx;
+        String psf;
+        int wsf;
+
+        public DPair(int vtx, String psf, int wsf){
+            this.vtx=vtx;
+            this.psf=psf;
+            this.wsf=wsf;
+        }
+
+        @Override
+        public int compareTo(DPair other){
+            return this.wsf-other.wsf;
+        }
+
+    }
+
+    public static void Dijkstras(ArrayList<Edge>[] graph, int src){
+        PriorityQueue<DPair> pq=new PriorityQueue<>();
+        pq.add(new DPair(src, ""+src, 0));
+        boolean[] vis=new boolean[graph.length];
+        while(pq.size()>0){
+            DPair rem=pq.remove();
+            if(vis[rem.vtx]==true){
+                continue;
+            }
+            else{
+                vis[rem.vtx]=true;
+                System.out.println(rem.vtx + " via " + rem.psf + " @ " + rem.wsf);
+            }
+            for(Edge e:graph[rem.vtx]){
+                if(vis[e.nbr]==false){
+                    pq.add(new DPair(e.nbr, rem.psf+e.nbr, rem.wsf+e.wt));
+                }
+            }
+        }
+    }
+
+    public Phelper(int vtx, int parent, int wt) {
+        this.vtx = vtx;
+        this.parent = parent;
+        this.wt = wt;
+    }
+
+    public int compareTo(Phelper o) {
+        return this.wt - o.wt;
+    } 
+}
+
+public static void prims(ArrayList<Edge>[] graph) {
+    PriorityQueue<Phelper> pq = new PriorityQueue<>();
+    pq.add(new Phelper(3, -1, 0));
+
+    int n = graph.length;
+    ArrayList<Edge>[] mst = new ArrayList[n];
+    for(int v = 0; v < n; v++) {
+        mst[v] = new ArrayList<>();
+    }
+
+    boolean[] vis = new boolean[n];
+
+    while(pq.size() > 0) {
+        // 1. get + rem
+        Phelper rem = pq.remove();
+        // 2. mark
+        if(vis[rem.vtx] == true) continue;
+        vis[rem.vtx] = true;
+        // 3. work -> print(for question) + add edge(mst graph)
+        if(rem.parent != -1) {
+            System.out.println("[" + rem.vtx + "-" + rem.parent + "@" + rem.wt + "]");
+            addEdge(mst, rem.vtx, rem.parent, rem.wt);
+        }
+
+        // 4. add neighbour
+        for(Edge e : graph[rem.vtx]) {
+            if(vis[e.nbr] == false) {
+                pq.add(new Phelper(e.nbr, rem.vtx, e.wt));
+            }
+        }
+    }
+    display(mst);
+}
+
+
 
     public static void fun() {
         ArrayList<Edge>[] graph = createGraph();
-        // boolean[] vis = new boolean[graph.length];
+        boolean[] vis = new boolean[graph.length];
         int[][] arr = {
-                {0, 1, 1, 0, 0},
+                {0, 1, 1, 0, 0},                                                                                                                
                 {0, 0, 1, 0, 1},
                 {1, 0, 1, 1, 1},
                 {1, 1, 1, 0, 1},
                 {1, 0, 0, 0, 1},
                 {1, 1, 1, 1, 1}
             };
-        int count1=countIsland(arr);
-        System.out.println(count1);
+        // int count1=countIsland(arr);
+        // System.out.println(count1);
         // System.out.println(hasPath(graph, 0, 5, vis));
         // multisolver(graph, 0, 6, vis, 100, 5, "", 0);
         // System.out.println("Smallest path = " + spath + "@" + spathwt);
         // System.out.println("longest path = " + lpath + "@" + lpathwt);
         // System.out.println("ceil path = " + cpath + "@" + cpathwt);
         // System.out.println("floor path = " + fpath + "@" + fpathwt);
-        // display(graph);
-        // getConnectedComponents(graph);
+        display(graph);
+        // hamiltonianPath(graph, 0, 0, vis,"");
+        // bfsGraph(graph,2);
+        // boolean ans=isBapartite(graph);
+        // int ans=spreadInfection(graph, 3, 6, vis, 0);
+        // System.out.println(ans);
+        Dijkstras(graph, 0);
 
     }
 
     public static ArrayList<Edge>[] createGraph() {
         // n-> number of vertices
-        int n = 8;
+        int n = 7;
         @SuppressWarnings("unchecked")
         ArrayList<Edge>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
@@ -208,15 +488,15 @@ public class graph {
 
         // int[][] data = {{0, 1, 10},{0, 3, 40},{1, 2, 10},{2, 3, 10},{3, 4, 2},{4, 5, 3},{4, 6, 8},{5, 6, 3}};
         addEdge(graph, 0, 1, 10);
-        addEdge(graph, 0, 3, 40);
         addEdge(graph, 1, 2, 10);
         addEdge(graph, 2, 3, 10);
-        // addEdge(graph, 3, 4, 2);
+        addEdge(graph, 0, 3, 40);
+        addEdge(graph, 3, 4, 2);
         addEdge(graph, 4, 5, 3);
-        addEdge(graph, 4, 6, 8);
         addEdge(graph, 5, 6, 3);
-        addEdge(graph, 7, 7, 90);
-        // addEdge(graph, 2, 5, 0);
+        addEdge(graph, 4, 6, 8);
+        // addEdge(graph, 7, 7, 90);
+        addEdge(graph, 2, 5, 5);
 
         // for(int i = 0; i < data.length; i++) {
         // addEdge(graph, data[i][0], data[i][1], data[i][2]);
