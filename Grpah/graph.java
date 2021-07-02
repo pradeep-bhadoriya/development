@@ -17,7 +17,7 @@ public class graph {
 
     public static void addEdge(ArrayList<Edge>[] graph, int src, int nbr, int wt) {
         graph[src].add(new Edge(src, nbr, wt));
-        graph[nbr].add(new Edge(nbr, src, wt));
+        // graph[nbr].add(new Edge(nbr, src, wt));
     }
 
 
@@ -401,52 +401,77 @@ public class graph {
         }
     }
 
-    public Phelper(int vtx, int parent, int wt) {
-        this.vtx = vtx;
-        this.parent = parent;
-        this.wt = wt;
-    }
+    public static class Phelper implements Comparable<Phelper> {
+        int vtx;
+        int parent;
+        int wt;
 
-    public int compareTo(Phelper o) {
-        return this.wt - o.wt;
-    } 
-}
-
-public static void prims(ArrayList<Edge>[] graph) {
-    PriorityQueue<Phelper> pq = new PriorityQueue<>();
-    pq.add(new Phelper(3, -1, 0));
-
-    int n = graph.length;
-    ArrayList<Edge>[] mst = new ArrayList[n];
-    for(int v = 0; v < n; v++) {
-        mst[v] = new ArrayList<>();
-    }
-
-    boolean[] vis = new boolean[n];
-
-    while(pq.size() > 0) {
-        // 1. get + rem
-        Phelper rem = pq.remove();
-        // 2. mark
-        if(vis[rem.vtx] == true) continue;
-        vis[rem.vtx] = true;
-        // 3. work -> print(for question) + add edge(mst graph)
-        if(rem.parent != -1) {
-            System.out.println("[" + rem.vtx + "-" + rem.parent + "@" + rem.wt + "]");
-            addEdge(mst, rem.vtx, rem.parent, rem.wt);
+        public Phelper(int vtx, int parent, int wt) {
+            this.vtx = vtx;
+            this.parent = parent;
+            this.wt = wt;
         }
 
-        // 4. add neighbour
-        for(Edge e : graph[rem.vtx]) {
-            if(vis[e.nbr] == false) {
-                pq.add(new Phelper(e.nbr, rem.vtx, e.wt));
+        public int compareTo(Phelper o) {
+            return this.wt - o.wt;
+        } 
+    }
+
+    public static void prims(ArrayList<Edge>[] graph) {
+        PriorityQueue<Phelper> pq = new PriorityQueue<>();
+        pq.add(new Phelper(3, -1, 0));
+
+        int n = graph.length;
+        ArrayList<Edge>[] mst = new ArrayList[n];
+        for(int v = 0; v < n; v++) {
+            mst[v] = new ArrayList<>();
+        }
+
+        boolean[] vis = new boolean[n];
+
+        while(pq.size() > 0) {
+            // 1. get + rem
+            Phelper rem = pq.remove();
+            // 2. mark
+            if(vis[rem.vtx] == true) continue;
+            vis[rem.vtx] = true;
+            // 3. work -> print(for question) + add edge(mst graph)
+            if(rem.parent != -1) {
+                System.out.println("[" + rem.vtx + "-" + rem.parent + "@" + rem.wt + "]");
+                addEdge(mst, rem.vtx, rem.parent, rem.wt);
+            }
+
+            // 4. add neighbour
+            for(Edge e : graph[rem.vtx]) {
+                if(vis[e.nbr] == false) {
+                    pq.add(new Phelper(e.nbr, rem.vtx, e.wt));
+                }
             }
         }
+        display(mst);
     }
-    display(mst);
-}
 
+    public static void topologicalSort(ArrayList<Edge>[] graph, int src, Stack<Integer> st, boolean[] vis){
+        for(Edge e:graph[src]){
+            if(vis[e.nbr]==false){
+                topologicalSort(graph, e.nbr, st, vis);     
+            }  
+        }
+        vis[src]=true;
+        st.push(src);
+    }
 
+    public static void OrderOfCompilation(ArrayList<Edge>[] graph){
+        @SuppressWarnings("unchecked")
+        Stack<Integer> st=new Stack<>();
+        boolean[] vis=new boolean[graph.length];
+        for(int i=0;i<graph.length;i++){
+            if(vis[i]==false){
+                topologicalSort(graph, i, st, vis);
+            }
+        }
+        System.out.println(st);
+    }
 
     public static void fun() {
         ArrayList<Edge>[] graph = createGraph();
@@ -473,7 +498,8 @@ public static void prims(ArrayList<Edge>[] graph) {
         // boolean ans=isBapartite(graph);
         // int ans=spreadInfection(graph, 3, 6, vis, 0);
         // System.out.println(ans);
-        Dijkstras(graph, 0);
+        // Dijkstras(graph, 0);
+        OrderOfCompilation(graph);
 
     }
 
@@ -491,12 +517,12 @@ public static void prims(ArrayList<Edge>[] graph) {
         addEdge(graph, 1, 2, 10);
         addEdge(graph, 2, 3, 10);
         addEdge(graph, 0, 3, 40);
-        addEdge(graph, 3, 4, 2);
+        addEdge(graph, 4, 3, 2);
         addEdge(graph, 4, 5, 3);
         addEdge(graph, 5, 6, 3);
         addEdge(graph, 4, 6, 8);
         // addEdge(graph, 7, 7, 90);
-        addEdge(graph, 2, 5, 5);
+        // addEdge(graph, 2, 5, 5);
 
         // for(int i = 0; i < data.length; i++) {
         // addEdge(graph, data[i][0], data[i][1], data[i][2]);

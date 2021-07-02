@@ -1,0 +1,105 @@
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+.showcase{
+    background-image:linear-gradient(rgb(0,0,0,0),rgb(0,0,0,0.3)) , url("./pexels-rostislav-uzunov-5011647.jpg");
+    height: 100vh;
+    background-size: 100vw;
+    background-attachment: fixed;
+}
+.navlinks{
+    display: flex;
+    /* background-color: brown;  */
+    justify-content: flex-end;
+    height:50px;
+    align-items: center;
+}
+
+
+.showcase-ul{
+    display: flex;
+    list-style: none;
+    width: 40%;
+    justify-content: space-around;
+    /* margin-top: 5px; */
+}
+.showcase-li a{
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+.showcase-li a:hover{
+    color: aqua;
+}
+.showcase-content{
+    position: absolute;
+    top: 30%;
+    left: 5%;
+}
+.showcase-content h1{
+    color: white;
+    font-size: 500%;
+}
+.showcase-buttons{
+    display: flex;
+    /* background-color: blueviolet; */
+    width: 300px;
+    justify-content: space-evenly;
+}
+.btn{
+    display: flex;
+    background-color: aqua;
+    height: 40px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.5s;
+    
+}
+.btn-fade{
+    display: flex;
+    /* background-color: aqua; */
+    height: 40px;
+    border: 1px solid aqua;
+    /* border-color: aqua; */
+    color: aqua;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.5s;
+
+}
+.btn-fade:hover{
+    transform: scale(1.4);
+    background-color: aqua;
+    color: black;
+}
+.btn:hover{
+    transform: scale(1.4);
+    background-color: aqua;
+}
+#changing-text{
+    color: aqua;
+    /* background-color: aqua; */
+}
+.fixed{
+    /* display: flex; */
+    /* color: rgb(0, 204, 255); */
+    backface-visibility:visible;
+    background-color: rgb(15, 43, 95);
+    opacity: 1;
+    /* opacity: 0.7; */
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+}
+.fixed a{
+    color: rgb(0, 255, 255);
+    font-weight: bolder;
+}
