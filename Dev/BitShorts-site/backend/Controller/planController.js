@@ -1,101 +1,103 @@
-const plans=require("../Model/plansModel.json");
-const fs=require("fs");
-const { uuid }=require("uuidv4");
-const path=require("path");
-let plansPath=path.join(__dirname,"..","Model","plansModel.json");
+const planModel = require("../Model/plansModel");
+// const fs = require("fs");
+// const { uuid } = require("uuidv4");
+// const path = require("path");
+// let plansPath = path.join(__dirname, "..", "Model", "plansModel.json");
 
-function getAllPlans(req, res) {
-    res.status(200).json({
-        message: "got all plans",
-        data: plans
-    })
+async function getAllPlans(req, res) {
+    try {
+        let allPlans = await planModel.find();
+        res.status(200).json({
+            message: "got all plans",
+            data: allPlans
+        })
+    }
+    catch (error) {
+        res.status(501).json({
+            message: "No Plan found",
+            data: error
+        })
+    }
+
     // console.log(__dirname);
 
 }
-function createPlan(req, res) {
-    console.log(uuid());
+async function createPlan(req, res) {
+    // console.log(uuid());
     let plan = req.body
     // plan.id=uuid();
-    plan.id = uuid();
+    // plan.id = uuid();
     // console.log(id)
-    console.log("pradeep is don hai");
-    plans.push(plan);
-    
-    console.log(plansPath);
-    fs.writeFileSync(plansPath, JSON.stringify(plans));
+    // console.log("pradeep is don hai");
+    // plans.push(plan);
 
-    res.status(201).json({
-        message: "successfully created a plan",
-        data: plans
-    })
+    // console.log(plansPath);
+    // fs.writeFileSync(plansPath, JSON.stringify(plans));
+    try {
+        let newPlan = await planModel.create(plan);
+        res.status(201).json({
+            message: "successfully created a plan",
+            data: plan
+        })
+    }
+    catch (error) {
+        res.status(201).json({
+            message: "plan creation failed",
+            error: error
+        })
+    }
 }
-function planByID(req, res) {
+async function planByID(req, res) {
     let { id } = req.params;
-
-    let filteredplans = plans.filter(function (plan) {
-        return plan.id == id
-    })
-
-    if (filteredplans.length) {
+    try {
+        let plan = await planModel.findById(id);
         res.status(200).json({
-            message: "Success got",
-            data: filteredplans
+            message: "got plan by id",
+            data: plan
         })
-    }
-    else {
+    } catch (error) {
         res.status(404).json({
             message: "plan not found with this id ",
+            error: error
         })
     }
-
 }
-function updatePlan(req, res) {
-    let { id } = req.params;
-    let updateObj = req.body;
+async function updatePlan(req, res) {
+    try {
+        let { id } = req.params;
+        let updateObj = req.body;
 
-    let filteredplans = plans.filter(function (plan) {
-        return plan.id == id
-    })
-
-    if (filteredplans.length) {
-        let plan = filteredplans[0];
-        for (key in updateObj) {
-            plan[key] = updateObj[key];
-        }
-        fs.writeFileSync(plansPath, JSON.stringify(plans));
-    }
-    else {
-        res.status(404).json({
-            message: "plan not found with this id ",
-        })
-    }
-
-}
-function deletePlan(req, res) {
-    let { id } = req.params;
-
-    let filteredplans = plans.filter(function (plan) {
-        return plan.id != id
-    })
-
-    if (filteredplans.length == plans.length) {
-        res.status(404).json({
-            message: "plan not found with this id ",
-        })
-    }
-    else {
-
-        fs.writeFileSync(plansPath, JSON.stringify(filteredplans))
+        let updatedPlan = await planModel.findByIdAndUpdate(id, updateObj, { new: true })
         res.status(200).json({
-            message: "Success got",
-            data: filteredplans
+            message: "plan  with this id updated",
+            data: updatedPlan
+        })
+    } catch (error) {
+        res.status(200).json({
+            message: "plan  with this id not updated",
+            error
         })
     }
+}
+async function deletePlan(req, res) {
+    try {
+        let { id } = req.params;
 
+        let deletedPlan=await planModel.findByIdAndDelete(id);
+        res.status(200).json({
+            message: "plan with this id deleted",
+            data:deletedPlan
+        })
+    } catch (error) {
+        res.status(200).json({
+            message: "plan with this id not deleted",
+            error
+        })
+    }
 }
 
-module.exports.getAllPlans=getAllPlans;
-module.exports.createPlan=createPlan;
-module.exports.planByID=planByID;
-module.exports.updatePlan=updatePlan;
-module.exports.deletePlan=deletePlan;
+module.exports.getAllPlans = getAllPlans;
+module.exports.createPlan = createPlan;
+module.exports.planByID = planByID;
+module.exports.updatePlan = updatePlan;
+module.exports.deletePlan = deletePlan;
