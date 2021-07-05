@@ -1,7 +1,7 @@
 const mongoose=require("mongoose");
-const secret = require("./secret");
+const secret = require("../config/secret");
 
-mongoose.connect(secret,{ useNewUrlParser: true , useUnifiedTopology: true  } ).then((db)=>{
+mongoose.connect(secret.DB_LINK,{ useNewUrlParser: true , useUnifiedTopology: true  } ).then((db)=>{
 
 })
 .then((db)=>{
@@ -40,6 +40,10 @@ let userSchema=new mongoose.Schema({
     }
 })
 
+userSchema.pre("save" , function(){
+    this.confirmPassword=undefined;
+})
+// compiling schema into collection
 const userModel=mongoose.model("usercollection" , userSchema);
 
 module.exports=userModel;

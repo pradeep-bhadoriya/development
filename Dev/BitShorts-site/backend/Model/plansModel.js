@@ -1,7 +1,7 @@
 const mongoose=require("mongoose");
-const secret = require("./secret");
+const { DB_LINK } = require("../config/secret");
 
-mongoose.connect(secret,{ useNewUrlParser: true , useUnifiedTopology: true  } ).then((db)=>{
+mongoose.connect(DB_LINK,{ useNewUrlParser: true , useUnifiedTopology: true  } ).then((db)=>{
 
 })
 .then((db)=>{
