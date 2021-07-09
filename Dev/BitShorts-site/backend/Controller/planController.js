@@ -48,9 +48,10 @@ async function createPlan(req, res) {
     }
 }
 async function planByID(req, res) {
-    let { id } = req.params;
+    let {id} = req.params
     try {
         let plan = await planModel.findById(id);
+        console.log(plan);
         res.status(200).json({
             message: "got plan by id",
             data: plan

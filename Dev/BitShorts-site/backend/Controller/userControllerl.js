@@ -123,12 +123,22 @@ async function createUser(req, res) {
 }
 async function userByID(req, res) {
     try {
-        let { id } = req.params;
+        // console.log(req.id);
+        let id  = req.id;
+        console.log("id is ->",id);
         let user = await userModel.findById(id);
-        res.status(200).json({
-            message: "got user by id",
-            data: user
-        })
+        if(user){
+            res.status(200).json({
+                message: "got user by id",
+                data: user
+            })
+        }
+        else{
+            res.status(404).json({
+                message: "user not found with this id ",
+                error: error
+            })
+        }
     } catch (error) {
         res.status(404).json({
             message: "user not found with this id ",
@@ -138,8 +148,8 @@ async function userByID(req, res) {
 }
 async function updateUser(req, res) {
     try {
-        let { id } = req.params;
-        let updateObj = req.body;
+        let id = req.id;
+        let updateObj = req.body.updateObj;
 
         let updatedUser = await userModel.findByIdAndUpdate(id, updateObj, { new: true })
         res.status(200).json({
@@ -155,7 +165,7 @@ async function updateUser(req, res) {
 }
 async function deleteUser(req, res) {
     try {
-        let { id } = req.params;
+        let id = req.id;
 
         let deletedUser=await userModel.findByIdAndDelete(id);
         res.status(200).json({

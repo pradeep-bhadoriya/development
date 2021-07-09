@@ -1,5 +1,6 @@
 const mongoose=require("mongoose");
 const secret = require("../config/secret");
+const crypto = require("crypto");
 
 mongoose.connect(secret.DB_LINK,{ useNewUrlParser: true , useUnifiedTopology: true  } ).then((db)=>{
 
@@ -37,12 +38,38 @@ let userSchema=new mongoose.Schema({
         type:String,
         enum:["admin" , "user" , "owner" , "delivery boy"],
         default:"user"
-    }
+    },
+    pwToken:String,
+    tokenTime:String
 })
 
 userSchema.pre("save" , function(){
     this.confirmPassword=undefined;
 })
+
+userSchema.methods.createPwToken=function(){
+    console.log("inside createPwToken");
+
+    let token=crypto.randomBytes(32).toString("hex");
+    let time=Date.now()*6010*1000;
+
+    this.pwToken=token;
+    this.tokenTime=time;
+
+    // console.log(this);
+    return(token);
+    // iske bad save krna hai
+
+}
+
+userSchema.methods.resetPasswordHandler = function(password , confirmPassword){
+    console.log("Inside resetPasswordHandler");
+    this.password=password;
+    this.confirmPassword=confirmPassword;
+    this.pwToken=undefined;
+    this.tokenTime=undefined;
+}
+
 // compiling schema into collection
 const userModel=mongoose.model("usercollection" , userSchema);
 
