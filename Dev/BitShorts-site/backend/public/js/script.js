@@ -4,7 +4,7 @@ let word = names[idx];
 let text = "";
 let isDeleting = false;
 
-let changingText = document.querySelector("#changing-text")
+let changingText = document.querySelector(".changing-text")
 let showcase=document.querySelector(".showcase");
 let navlinks=document.querySelector(".navlinks");
 
