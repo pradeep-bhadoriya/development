@@ -25,12 +25,15 @@ async function signup(req, res) {
 async function login(req, res) {
     try {
         let { email, password } = req.body;
-        console.log(email,password);
+        console.log(email, password);
         let loggedinUser = await userModel.find({ email: email });
         if (loggedinUser.length) {
             let user = loggedinUser[0];
             if (user.password == password) {
                 const token = jwt.sign({ id: user["_id"] }, SECRET_KEY)
+
+                //sedning cookie
+                res.cookie('jwt', token, { httpOnly: true });
                 res.status(200).json({
                     message: "user found and logged in",
                     data: loggedinUser[0],
@@ -51,9 +54,19 @@ async function login(req, res) {
     }
 }
 
+async function logout(req , res){
+    try {
+        res.clearCookie("jwt");
+        res.redirect("/");
+    } catch (error) {
+        
+    }
+}
+
 async function authenticate(req, res, next) {
     try {
-        const token = req.headers.authorization.split(" ").pop();
+        // const token = req.headers.authorization.split(" ").pop();
+        const token = req.cookies.jwt;
         console.log(token);
         const payload = jwt.verify(token, SECRET_KEY);
         console.log(payload);
@@ -152,7 +165,7 @@ async function resetPassword(req, res) {
                 data: user
             })
         }
-        else{
+        else {
             res.status(501).json({
                 message: "failed inside else",
                 data: user
@@ -166,9 +179,35 @@ async function resetPassword(req, res) {
     }
 }
 
+async function isLoggedIn(req, res, next){
+    try {
+        let token=req.cookies.jwt;
+        console.log("token",token);
+        let payload=jwt.verify(token , SECRET_KEY);
+        if(payload.id){
+            let user=await userModel.findById(payload.id);
+            req.name=user.name;
+            next();
+        }
+        else{
+            next();
+        }
+
+    } catch (error) {
+        next()
+        res.status(200).json({
+            message:"hello",
+            error
+        })
+        
+    }
+}
+
 module.exports.signup = signup;
 module.exports.login = login;
 module.exports.authenticate = authenticate;
 module.exports.authorize = authorize;
 module.exports.forgotPassword = forgotPassword;
 module.exports.resetPassword = resetPassword;
+module.exports.isLoggedIn = isLoggedIn;
+module.exports.logout=logout;

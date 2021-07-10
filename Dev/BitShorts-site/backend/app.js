@@ -4,10 +4,12 @@ const planRouter = require("./Router/planRouter");
 const userRouter = require("./Router/userRouter");
 const viewRouter = require("./Router/viewRouter");
 const path=require("path");
+const cookieParser=require("cookie-parser")
 
 
 // it tracks incoming request and if there is data , it will fed that data to req.body
 app.use(express.json());
+app.use(cookieParser());
 
 app.use( express.static("public" ))
 

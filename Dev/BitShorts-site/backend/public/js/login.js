@@ -10,6 +10,7 @@ loginBtn.addEventListener("click" ,async function(e){
         let obj=await axios.post("http://localhost:3000/app/user/login" , {email:email.value , password:pw.value})
         console.log("login successfully");
         console.log(obj);
+        window.location.href="/";
     }
     } catch (error) {
         alert(error)
