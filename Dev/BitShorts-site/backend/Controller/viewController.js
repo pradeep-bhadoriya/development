@@ -1,3 +1,4 @@
+const planModel = require("../Model/plansModel");
 
 
 function getDemoPage(req , res){
@@ -13,10 +14,17 @@ function loginPage(req , res){
 }
 
 function signupPage(req , res){
-    res.render("signup.pug")
+    res.render("signup.pug");
+}
+
+async function plansPage(req , res){
+    let plans=await planModel.find();
+    console.log(plans);
+    res.render("allPlans.pug" , {plans:plans});
 }
 
 module.exports.getDemoPage=getDemoPage;
 module.exports.homePage=homePage;
 module.exports.loginPage=loginPage;
 module.exports.signupPage=signupPage;
+module.exports.plansPage=plansPage;
