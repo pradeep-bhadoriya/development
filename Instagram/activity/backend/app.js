@@ -112,6 +112,62 @@ app.post("/accept", async function(req , res){
     })
 })
 
+//view all pending requests
+app.get("/allrequest/:uid" , async function(req , res){
+    let uid=req.params.uid;
+    let sql=`select * from following_table where followId='${uid}'`;
+    connection.query(sql , async function(error, data){
+        try {
+            if(error){
+                res.json({
+                    message:"failed to get pending requests",
+                    error
+                })
+            }
+            else{
+                let requestNames=[];
+                console.log(data)
+                for(let i=0;i<data.length;i++){
+                    let user = await getUserByIdPromisified(data[i].uid);
+                    requestNames.push(user);
+                }
+                console.log(requestNames)
+                res.json({
+                    message:"successfullt got pending requests",
+                    requestNames
+                })
+            }
+        } catch (error) {
+            
+        }
+        
+    })
+})
+
+// cancel pending request
+app.delete("/cancel", async function(req , res){
+    // we have to update follwing table and follower table
+    let accepterId=req.body.follow_id;
+    let requesterId=req.body.uid;
+    // updating following table
+    const followingSql=`delete from following_table where uid='${requesterId}' and followId='${accepterId}'`;
+    connection.query(followingSql , function(error, data){
+        if(error){
+            res.json({
+                message:"failed to accept friend request",
+                error
+            })
+        }
+        else{
+            // updating follower table
+            res.json({
+                message:"friend request cancelled successfully- - Inside follwer",
+                data
+            })
+        }
+    })
+})
+
 app.listen(3000,function(){
     console.log("app is listening at 3000 port !");
 })
