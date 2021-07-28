@@ -59,6 +59,9 @@ userSchema.methods.createPwToken=function(){
     // console.log(this);
     return(token);
     // iske bad save krna hai
+    project code- X1ARTVS1
+    account- AMX_PHX1
+    MANAGER - bhanvi.khajuria
 
 }
 
