@@ -17,6 +17,7 @@ app.use("/post" , postRouter)
 //send request
 app.post("/request", async function(req , res){
     let {uid , follow_id}=req.body;
+    console.log(uid);
     let user=await getUserByIdPromisified(follow_id);
     console.log(user[0])
     let isPublic=user[0].isPublic;
