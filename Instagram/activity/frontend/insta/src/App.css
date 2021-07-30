@@ -1,0 +1,10 @@
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    background: #FAFAFA;
+}
+.homepage{
+    display: flex;
+    justify-content: space-evenly
+}

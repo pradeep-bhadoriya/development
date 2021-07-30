@@ -1,0 +1,24 @@
+.navbar{
+    display: flex;
+    border-bottom: 1px solid lightgrey;
+    justify-content:space-around;
+    align-items: center;
+    background-color: white;
+    height: 50px;
+}
+.search{
+    border-radius: 25px;
+    border: 0.2px lightgrey;
+}
+.searchText{
+    align-items: center;
+    text-align: center;
+    width: 150px;
+    height:25px;
+}
+.links{
+    display: flex;
+    /* background: pink; */
+    width: 150px;
+    justify-content: space-evenly;
+}

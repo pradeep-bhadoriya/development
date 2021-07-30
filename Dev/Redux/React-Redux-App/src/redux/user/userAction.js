@@ -19,7 +19,7 @@ export const userFailure=(error)=>{
 }
 
 export const fetchUsers=()=>{
-    return async (dispatch)=>{
+    return async (dispatch)=>{  
         try {
             dispatch(userRequest);
             console.log("hi baba ko");
