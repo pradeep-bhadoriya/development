@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { getUserByIdPromisified } = require("./controller/userController");
 const connection = require("./model/db");
 const postRouter = require("./router/postRouter");
@@ -6,6 +7,7 @@ const userRouter = require("./router/userRouter");
 
 const app = express();
 app.use(express.json());
+app.use(express.static('public'))
 
 // user router
 app.use("/user", userRouter)

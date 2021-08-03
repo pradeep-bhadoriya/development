@@ -4,8 +4,8 @@
     border: 1px solid lightgrey;
     height:450px;
     padding: 5px;
-    position:fixed;
-    margin-left: 70%;
+    /* position:fixed; */
+    /* margin-left: 70%; */
 }
 .user{
     display: flex;

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import "./post.css"
 const Post = (props) => {
     return <>
+    {console.log("inside post")}
         <div class="post">
             <div class="post-username">
-                <img src="../icon.png" alt="" />
+                <img src={props.userImage}  alt="" />
                 <div class="username">{props.name}</div>
             </div>
             <div class="post-image">

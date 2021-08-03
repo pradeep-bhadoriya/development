@@ -28,13 +28,13 @@ async function getAllUser(req , res){
 function createUserPromisified(userObj){
     return new Promise(function(resolve , reject){
         const uid=uuidv4();
-        const {name ,email,pw,username,bio,isPublic}=userObj;
+        const {name ,email,pw,username,bio,isPublic,pimage}=userObj;
         let sql;
         if(isPublic!=undefined){
-            sql=`insert into user_table(uid, name, email, pw, username, bio, isPublic) values('${uid}', '${name}', '${email}', '${pw}', '${username}', '${bio}', ${isPublic})`;
+            sql=`insert into user_table(uid, name, email, pw, pimage, username, bio, isPublic) values('${uid}', '${name}', '${email}', '${pw}', '${pimage?pimage:"default.png"}', '${username}', '${bio}', ${isPublic})`;
         }
         else{
-            sql=`insert into user_table(uid, name, email, pw, username, bio) values('${uid}', '${name}', '${email}', '${pw}', '${username}', '${bio}')`;            
+            sql=`insert into user_table(uid, name, email, pw, pimage, username, bio) values('${uid}', '${name}', '${email}', '${pw}', '${pimage?pimage:"default.png"}', '${username}', '${bio}')`;            
         }
         
         connection.query(sql , function(error , data){
@@ -50,6 +50,12 @@ function createUserPromisified(userObj){
 async function createUser(req , res){
     try {
         const userObj=req.body;
+        console.log(userObj);
+        console.log(req.file)
+        let pimage=req.file.destination+"/"+req.file.filename;
+        pimage=pimage.substring(7);
+        userObj.pimage=pimage;
+        console.log(userObj);
         let data = await createUserPromisified(userObj);
         res.status(220).json({
             data:data,
@@ -82,7 +88,7 @@ async function getUserById(req , res){
         // console.log(uid);
         const data=await getUserByIdPromisified(uid);
         if(data){
-            res.json({
+            res.status(200).json({
                 message:"successfull to get user by id",
                 data
             })
@@ -99,6 +105,9 @@ async function updateUserById(req , res){
     try {
         const uid=req.params.uid;
         const newUserObj=req.body;
+        let pimage=req.file.destination+"/"+req.file.filename;
+        pimage=pimage.substring(7);
+        newUserObj.pimage=pimage;
         let fetchSql=`select * from user_table where uid='${uid}'`;
         connection.query(fetchSql , function(error , data){
             if(error){
