@@ -1,12 +1,13 @@
+// import { state } from "../../../../../backend/model/db";
 import { FETCH_USER } from "./settingsType"
 
 const initialState = {
     user: {},
-    disabled:false
+    disabled:true
 }
 
 const userReducer = (state = initialState, action) => {
-    // console.log("Inside reducer");
+    console.log("Inside user reducer");
     switch (action.type) {
         case FETCH_USER:
             // // function addPost() {
@@ -15,7 +16,7 @@ const userReducer = (state = initialState, action) => {
             // //     return state.posts;
             // // }
             console.log("inside case")
-            // console.log(newposts)
+            console.log("action.payload",action.payload)
 
             return {
                 // posts: state.posts.push(action.payload)
@@ -24,6 +25,10 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 user:action.payload
             }
+        case "UPDATE_DISABLE":return{
+            ...state,
+            disabled:action.payload
+        }
         default: return state
     }
 }

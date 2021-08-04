@@ -7,3 +7,9 @@ export const fetchUser=(data)=>{
         payload:data
     }
 }
+export const updateDisable=(data)=>{
+    return{
+        type:"UPDATE_DISABLE",
+        payload:data
+    }
+}

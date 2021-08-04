@@ -12,27 +12,7 @@ const initialState = {
         //     bio: "I am pradeep",
         //     isPublic: 0,
         // }
-        // {
-        //     uid: "248624af-b1bb-4c12-b54a-136494fb1971",
-        //     name: "ripu",
-        //     email: "ripudamansb92@gmail.com",
-        //     pw: "123456789",
-        //     pimage: "../post2.png",
-        //     username: "ripu3232",
-        //     bio: "I am pradeep",
-        //     isPublic: 0,
-        // },
-        // {
-        //     uid: "248624af-b1bb-4c12-b54a-136494fb1971",
-        //     name: "ripu",
-        //     email: "ripudamansb92@gmail.com",
-        //     pw: "123456789",
-        //     pimage: "../post2.png",
-        //     username: "ripu3232",
-        //     bio: "I am pradeep",
-        //     isPublic: 0,
-        // }
-
+      
     ]
 }
 let newposts=[]

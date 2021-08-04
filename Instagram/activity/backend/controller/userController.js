@@ -103,12 +103,17 @@ async function getUserById(req , res){
 
 async function updateUserById(req , res){
     try {
+
         const uid=req.params.uid;
         const newUserObj=req.body;
-        let pimage=req.file.destination+"/"+req.file.filename;
-        pimage=pimage.substring(7);
-        newUserObj.pimage=pimage;
+        if(req.file!=undefined){
+            let pimage=req.file.destination+"/"+req.file.filename;
+            pimage=pimage.substring(7);
+            newUserObj.pimage=pimage;
+        }
         let fetchSql=`select * from user_table where uid='${uid}'`;
+        
+
         connection.query(fetchSql , function(error , data){
             if(error){
                 res.json({
@@ -149,7 +154,7 @@ async function updateUserById(req , res){
     } catch (error) {
         res.json({
             message:"failed to update user by id - Inside catch",
-            error
+            error:error
         })
     }
 }
