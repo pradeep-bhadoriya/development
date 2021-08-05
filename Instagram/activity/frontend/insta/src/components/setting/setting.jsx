@@ -13,7 +13,7 @@ const Setting = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         console.log("sending axios request")
-        axios.get("/user/891c7120-b769-4604-ac78-af7502b2b148").then(data => {
+        axios.get("/user/259f44f0-b76b-428c-9a98-bbe7694ae518").then(data => {
             console.log(data.data.data[0], "Inside setting axios");
             var1 = data;
             dispatch(fetchUser(data.data.data[0]));

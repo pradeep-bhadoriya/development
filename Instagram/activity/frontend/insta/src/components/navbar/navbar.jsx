@@ -20,7 +20,7 @@ const Navbar = () => {
                     <div className="profile">Profile</div>
                 </Link>
                 <Link to="settings">
-                    <div className="settings">Settings</div>
+                    <div className="setting">Settings</div>
                 </Link>
 
             </div>

@@ -5,6 +5,8 @@
     align-items: center;
     background-color: white;
     height: 50px;
+    position:sticky;
+    top:0px;
 }
 .search{
     border-radius: 25px;
@@ -19,6 +21,7 @@
 .links{
     display: flex;
     /* background: pink; */
-    width: 150px;
+    width: 25%;
+    height: auto;
     justify-content: space-evenly;
 }

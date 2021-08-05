@@ -7,22 +7,22 @@ import axios from 'axios';
 
 class Feeds extends Component {
     componentDidMount(){
-        axios.get("/user").then(data=>{
+        axios.get("/post").then(data=>{
             console.log("-------------------------------")
             // console.log(data.data.data);
             console.log("-------------------------------")
             this.props.fetchPost(data.data.data);
             // console.log("-------------------------------")
-            console.log(this.props.posts)
+            console.log(this.props.posts , "Inside Feeds")
             console.log("-------------------------------")
         })
     }
     render() {
-        console.log(this.props.posts);
+        
 
         return (<div className="feeds">
             {this.props.posts.map((post)=>{
-                 return <Post name={post.username} userImage={post.pimage} id={post.uid} key={post.uid}></Post>
+                 return <Post post={post} key={post.pid}></Post>
             })}
 
         </div>);

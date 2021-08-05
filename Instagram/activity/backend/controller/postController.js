@@ -27,16 +27,15 @@ async function getAllPost(req , res){
 
 function createPostPromisified(postObj){
     return new Promise(function(resolve , reject){
-        const uid=uuidv4();
-        const {name ,email,pw,postname,bio,isPublic}=postObj;
-        let sql;
-        if(isPublic!=undefined){
-            sql=`insert into post_table(uid, name, email, pw, postname, bio, isPublic) values('${uid}', '${name}', '${email}', '${pw}', '${postname}', '${bio}', ${isPublic})`;
-        }
-        else{
-            sql=`insert into post_table(uid, name, email, pw, postname, bio) values('${uid}', '${name}', '${email}', '${pw}', '${postname}', '${bio}')`;            
-        }
-        
+        const pid=uuidv4();
+        let postimage=postObj.postimage;
+        const {uid , caption }=postObj;
+        let createdOn=new Date()
+        createdOn=createdOn.toString()
+        createdOn=createdOn.substring(4,24)
+        console.log(createdOn)
+        let sql=`insert into post_table(pid, uid, postimage, caption , createdOn) values('${pid}', '${uid}', '${postimage}', '${caption}', '${createdOn}')`;
+
         connection.query(sql , function(error , data){
             if(error){
                 reject(error);
@@ -49,7 +48,11 @@ function createPostPromisified(postObj){
 }
 async function createPost(req , res){
     try {
-        const postObj=req.body;
+        let postObj=req.body;
+        console.log(req.file);
+        let postimage=req.file.destination + "/" + req.file.filename;
+        postimage=postimage.substring(7);
+        postObj.postimage=postimage
         let data = await createPostPromisified(postObj);
         res.status(220).json({
             data:data,
@@ -65,9 +68,9 @@ async function createPost(req , res){
 
 async function getPostById(req , res){
     try {
-        var uid=req.params.uid
-        console.log(uid);
-        const sql=`select * from post_table where uid='${uid}'`;
+        var pid=req.params.pid
+        console.log("Inside get post by id " , pid);
+        const sql=`select * from post_table where pid='${pid}'`;
         connection.query(sql , function(error , data){
             if(error){
                 res.json({
@@ -92,9 +95,9 @@ async function getPostById(req , res){
 
 async function updatePostById(req , res){
     try {
-        const uid=req.params.uid;
+        const pid=req.params.pid;
         const newPostObj=req.body;
-        let fetchSql=`select * from post_table where uid='${uid}'`;
+        let fetchSql=`select * from post_table where pid='${pid}'`;
         connection.query(fetchSql , function(error , data){
             if(error){
                 res.json({
@@ -103,7 +106,7 @@ async function updatePostById(req , res){
                 })
             }
             else{
-                const {name, email, pw, pimage, postname, bio, isPublic}=data[0];
+                const {uid, postimage, caption , createdOn}=data[0];
                 const nname=newPostObj.name==undefined?name:newPostObj.name;
                 const nemail=newPostObj.email==undefined?email:newPostObj.email;
                 const npw=newPostObj.pw==undefined?pw:newPostObj.pw;
@@ -112,7 +115,7 @@ async function updatePostById(req , res){
                 const nbio=newPostObj.bio==undefined?bio:newPostObj.bio;
                 const nisPublic=newPostObj.isPublic==undefined?isPublic:newPostObj.isPublic;
 
-                let updateSql=`update post_table set name='${nname}', email='${nemail}', pw='${npw}', pimage='${npimage}', postname='${npostname}', bio='${nbio}', isPublic=${nisPublic} where uid='${uid}'`;
+                let updateSql=`update post_table set name='${nname}', email='${nemail}', pw='${npw}', pimage='${npimage}', postname='${npostname}', bio='${nbio}', isPublic=${nisPublic} where pid='${pid}'`;
                 connection.query(updateSql , function(error , data){
                     if(error){
                         res.json({
@@ -142,9 +145,9 @@ async function updatePostById(req , res){
 
 async function deletePostById(req , res){
     try {
-        var uid=req.params.uid
-        console.log(uid);
-        const sql=`delete from post_table where uid='${uid}'`;
+        var pid=req.params.pid
+        console.log(pid);
+        const sql=`delete from post_table where pid='${pid}'`;
         connection.query(sql , function(error , data){
             if(error){
                 res.json({
