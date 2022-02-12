@@ -143,6 +143,81 @@ public class graph{
         }
     }
 
+
+    static int time=0;
+    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+        // making graph
+        if(connections.size()==0 || connections.size()==1 || connections.size()==2){
+            return connections;
+        }
+        time=-1;
+        List<Integer>[] graph=new ArrayList[n];
+        List<List<Integer>> res=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            graph[i]=new ArrayList<>();
+        }
+        for(List<Integer> list:connections){
+            graph[list.get(0)].add(list.get(1));
+            graph[list.get(1)].add(list.get(0));
+        }
+        int[] parent=new int[n];
+        boolean[] arti=new boolean[n];
+        int[] disc=new int[n];
+        int[] low=new int[n];
+        boolean[] vis=new boolean[n];
+        parent[0]=-1;
+        Articulation_dfs(0,graph, parent, arti, disc, low, vis,res);
+        int count=0;
+        // for(boolean val:arti){
+        //     if(val==true){
+        //         count++;
+        //     }
+        // }
+        return res;
+    }
+    public void Articulation_dfs(int src, List<Integer>[] graph, int[] parent, boolean[] arti, int[] disc, int[] low, boolean[] vis, List<List<Integer>> res){
+            int count=0;
+            time++;
+            disc[src]=time;
+            low[src]=time;
+            vis[src]=true;
+            for(int nbr:graph[src]){
+                if(nbr==parent[src]){
+                    continue;
+                }
+                else if(vis[nbr]==true){
+                    low[src]=Math.min(low[src], disc[nbr]);
+                }
+                else{
+                    parent[nbr]=src;
+                    Articulation_dfs(nbr, graph, parent, arti, disc, low, vis, res);
+                    count++;
+                    low[src]=Math.min(low[src],low[nbr]);
+                    // if(parent[src]==-1){
+                    //     if(count>1){
+                    //         ArrayList<Integer> temp=new ArrayList<>();
+                    //         temp.add(src);
+                    //         temp.add(nbr);
+                    //         res.add(temp);
+                    //     }
+                    // }
+                    // else{
+                        if(low[nbr]>disc[src]){
+                            ArrayList<Integer> temp=new ArrayList<>();
+                            temp.add(src);
+                            temp.add(nbr);
+                            res.add(temp);
+                        }
+                    // }    
+                }
+            }
+    }
+
+
+    
+
+
+
     public static void main(String[] args){
         System.out.println("Pradeep");
     }

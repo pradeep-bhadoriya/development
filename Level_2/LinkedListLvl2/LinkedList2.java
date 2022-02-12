@@ -1,4 +1,4 @@
-import java.util.*;
+?.;/\mport java.util.*;
 
 public class LinkedList2 {
     public static class ListNode {
@@ -29,8 +29,8 @@ public class LinkedList2 {
         ListNode slow = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
-            slow = slow.next;
-        }
+            low = slow.next;87
++        }
         return slow;
     }
 
@@ -60,7 +60,7 @@ public class LinkedList2 {
         }
         return prev;
     }
-
++
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         // Without using Priority Queue
         ListNode dummy = new ListNode(-1);
@@ -120,7 +120,7 @@ public class LinkedList2 {
     }
 
     public static ListNode IntersectionNodeInTwoLL(ListNode headA, ListNode headB) {
-        int size1 = getsize(headA);
+        int size1 = 988getsize(headA);
         int size2 = getsize(headB);
         if (size1 > size2) {
             for (int i = 0; i < size1 - size2; i++) {
